@@ -8,7 +8,14 @@ a capactior3 plugin to get Statusbar Height on Android and get SafeArea info on 
 npm install capacitor-plugin-safe-area
 npx cap sync
 ```
+## Useage
+```typescript
+import { SafeArea } from "capacitor-plugin-safe-area";
 
+SafeArea.getSafeAreaInsets().then(({ insets }) => {
+  console.log(insets);
+})
+```
 ## API
 
 <docgen-index>
@@ -24,10 +31,10 @@ npx cap sync
 ### getSafeAreaInsets()
 
 ```typescript
-getSafeAreaInsets() => SafeAreaInsets
+getSafeAreaInsets() => any
 ```
 
-**Returns:** <code>SafeAreaInsets</code>
+**Returns:** <code>any</code>
 
 --------------------
 
