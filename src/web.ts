@@ -1,10 +1,16 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { SafeAreaPlugin } from './definitions';
+import type { SafeAreaPlugin, SafeAreaInsets } from './definitions';
 
 export class SafeAreaWeb extends WebPlugin implements SafeAreaPlugin {
-  async echo(options: { value: string }): Promise<{ value: string }> {
-    console.log('ECHO', options);
-    return options;
+  async getSafeAreaInsets(): Promise<SafeAreaInsets> {
+    return {
+      insets: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+      }
+    };
   }
 }

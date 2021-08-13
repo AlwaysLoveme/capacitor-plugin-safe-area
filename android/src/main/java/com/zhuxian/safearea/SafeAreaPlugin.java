@@ -8,15 +8,17 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 @CapacitorPlugin(name = "SafeArea")
 public class SafeAreaPlugin extends Plugin {
+    private SafeArea implementation;
+    @Override
+    public void load() {
+        implementation = new SafeArea();
+    }
 
-    private SafeArea implementation = new SafeArea();
 
     @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
-
+    public void getSafeAreaInsets(PluginCall call) {
         JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
+        ret.put("insets", implementation.getSafeAreaInsets(this.getBridge()));
         call.resolve(ret);
     }
 }

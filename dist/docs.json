@@ -1,0 +1,81 @@
+{
+  "api": {
+    "name": "SafeAreaPlugin",
+    "slug": "safeareaplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "getSafeAreaInsets",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "SafeAreaInsets"
+        ],
+        "slug": "getsafeareainsets"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "SafeAreaInsets",
+      "slug": "safeareainsets",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "insets",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "SafeArea"
+          ],
+          "type": "SafeArea"
+        }
+      ]
+    },
+    {
+      "name": "SafeArea",
+      "slug": "safearea",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "top",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "right",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "bottom",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "left",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "enums": []
+}
