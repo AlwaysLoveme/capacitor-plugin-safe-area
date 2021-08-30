@@ -15,20 +15,32 @@ public class SafeAreaPlugin: CAPPlugin {
             right: CGFloat = 0.00,
             left: CGFloat = 0.00;
         if #available(iOS 11.0, *) {
-            let window = UIApplication.shared.keyWindow;
-            top =  window?.safeAreaInsets.top ?? 0.00;
-            bottom = window?.safeAreaInsets.bottom ?? 0.00;
-            left = window?.safeAreaInsets.left ?? 0.00;
-            right = window?.safeAreaInsets.right ?? 0.00;
+            DispatchQueue.main.async {
+                let window = UIApplication.shared.keyWindow;
+                top =  window?.safeAreaInsets.top ?? 0.00;
+                bottom = window?.safeAreaInsets.bottom ?? 0.00;
+                left = window?.safeAreaInsets.left ?? 0.00;
+                right = window?.safeAreaInsets.right ?? 0.00;
+                call.resolve([
+                    "insets":[
+                        "top": top,
+                        "bottom": bottom,
+                        "right": right,
+                        "left": left
+                    ]
+                ])
+            }
+        } else {
+            call.resolve([
+                "insets":[
+                    "top": top,
+                    "bottom": bottom,
+                    "right": right,
+                    "left": left
+                ]
+            ])
         }
-        call.resolve([
-            "insets":[
-                "top": top,
-                "bottom": bottom,
-                "right": right,
-                "left": left
-            ]
-        ])
+       
     }
 }
 
