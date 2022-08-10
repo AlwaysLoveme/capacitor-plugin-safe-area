@@ -1,5 +1,5 @@
-import Foundation
 import Capacitor
+import Foundation
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
@@ -8,39 +8,37 @@ import Capacitor
 @objc(SafeAreaPlugin)
 public class SafeAreaPlugin: CAPPlugin {
     private let implementation = SafeArea()
-    
+
     @objc func getSafeAreaInsets(_ call: CAPPluginCall) {
         var top: CGFloat = 0.00,
             bottom: CGFloat = 0.00,
             right: CGFloat = 0.00,
-            left: CGFloat = 0.00;
+            left: CGFloat = 0.00
         if #available(iOS 11.0, *) {
             DispatchQueue.main.async {
-                let window = UIApplication.shared.keyWindow;
-                top =  window?.safeAreaInsets.top ?? 0.00;
-                bottom = window?.safeAreaInsets.bottom ?? 0.00;
-                left = window?.safeAreaInsets.left ?? 0.00;
-                right = window?.safeAreaInsets.right ?? 0.00;
+                let window = self.implementation.getWindow()
+                top = window?.safeAreaInsets.top ?? 0.00
+                bottom = window?.safeAreaInsets.bottom ?? 0.00
+                left = window?.safeAreaInsets.left ?? 0.00
+                right = window?.safeAreaInsets.right ?? 0.00
                 call.resolve([
-                    "insets":[
+                    "insets": [
                         "top": top,
                         "bottom": bottom,
                         "right": right,
-                        "left": left
-                    ]
+                        "left": left,
+                    ],
                 ])
             }
         } else {
             call.resolve([
-                "insets":[
+                "insets": [
                     "top": top,
                     "bottom": bottom,
                     "right": right,
-                    "left": left
-                ]
+                    "left": left,
+                ],
             ])
         }
-       
     }
 }
-
