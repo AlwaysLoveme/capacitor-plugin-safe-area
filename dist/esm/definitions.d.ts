@@ -1,5 +1,6 @@
 export interface SafeAreaPlugin {
     getSafeAreaInsets(): Promise<SafeAreaInsets>;
+    getStatusBarHeight(): Promise<StatusBarInfo>;
 }
 interface SafeArea {
     top: number;
@@ -9,5 +10,8 @@ interface SafeArea {
 }
 export interface SafeAreaInsets {
     insets: SafeArea;
+}
+export interface StatusBarInfo {
+    statusBarHeight: number;
 }
 export {};

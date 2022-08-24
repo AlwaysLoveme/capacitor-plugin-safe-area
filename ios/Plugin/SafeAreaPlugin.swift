@@ -41,4 +41,11 @@ public class SafeAreaPlugin: CAPPlugin {
             ])
         }
     }
+
+    @objc func getStatusBarHeight(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            let barHeight = self.implementation.getStatusBarHeight()
+            call.resolve(["statusBarHeight": barHeight])
+        }
+    }
 }

@@ -10,5 +10,10 @@ export class SafeAreaWeb extends WebPlugin {
             }
         };
     }
+    async getStatusBarHeight() {
+        return {
+            statusBarHeight: 0
+        };
+    }
 }
 //# sourceMappingURL=web.js.map

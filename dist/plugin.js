@@ -16,6 +16,11 @@ var capacitorSafeArea = (function (exports, core) {
                 }
             };
         }
+        async getStatusBarHeight() {
+            return {
+                statusBarHeight: 0
+            };
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({

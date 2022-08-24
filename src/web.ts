@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { SafeAreaPlugin, SafeAreaInsets } from './definitions';
+import type { SafeAreaPlugin, SafeAreaInsets, StatusBarInfo } from './definitions';
 
 export class SafeAreaWeb extends WebPlugin implements SafeAreaPlugin {
   async getSafeAreaInsets(): Promise<SafeAreaInsets> {
@@ -11,6 +11,11 @@ export class SafeAreaWeb extends WebPlugin implements SafeAreaPlugin {
         right: 0,
         bottom: 0,
       }
+    };
+  }
+  async getStatusBarHeight(): Promise<StatusBarInfo> {
+    return {
+      statusBarHeight: 0
     };
   }
 }

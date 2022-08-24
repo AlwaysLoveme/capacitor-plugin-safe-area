@@ -16,6 +16,18 @@
           "SafeAreaInsets"
         ],
         "slug": "getsafeareainsets"
+      },
+      {
+        "name": "getStatusBarHeight",
+        "signature": "() => any",
+        "parameters": [],
+        "returns": "any",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "StatusBarInfo"
+        ],
+        "slug": "getstatusbarheight"
       }
     ],
     "properties": []
@@ -69,6 +81,22 @@
         },
         {
           "name": "left",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
+    },
+    {
+      "name": "StatusBarInfo",
+      "slug": "statusbarinfo",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "statusBarHeight",
           "tags": [],
           "docs": "",
           "complexTypes": [],

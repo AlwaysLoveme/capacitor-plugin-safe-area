@@ -19,6 +19,11 @@ class SafeAreaWeb extends core.WebPlugin {
             }
         };
     }
+    async getStatusBarHeight() {
+        return {
+            statusBarHeight: 0
+        };
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({
