@@ -51,10 +51,10 @@ SafeArea.getStatusBarHeight().then(({statusBarHeight}) => {
 ### getSafeAreaInsets()
 
 ```typescript
-getSafeAreaInsets() => Promise<SafeArea>
+getSafeAreaInsets() => Promise<SafeAreaInsets>
 ```
 
-**Returns:** <code>SafeArea</code>
+**Returns:** <code>Promise&lt;<a href="#safeareainsets">SafeAreaInsets</a>&gt;</code>
 
 --------------------
 
@@ -65,7 +65,7 @@ getSafeAreaInsets() => Promise<SafeArea>
 getStatusBarHeight() => Promise<StatusBarInfo>
 ```
 
-**Returns:** <code>StatusBarInfo</code>
+**Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
 
 --------------------
 

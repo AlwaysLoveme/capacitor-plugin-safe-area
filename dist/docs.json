@@ -7,9 +7,9 @@
     "methods": [
       {
         "name": "getSafeAreaInsets",
-        "signature": "() => any",
+        "signature": "() => Promise<SafeAreaInsets>",
         "parameters": [],
-        "returns": "any",
+        "returns": "Promise<SafeAreaInsets>",
         "tags": [],
         "docs": "",
         "complexTypes": [
@@ -19,9 +19,9 @@
       },
       {
         "name": "getStatusBarHeight",
-        "signature": "() => any",
+        "signature": "() => Promise<StatusBarInfo>",
         "parameters": [],
-        "returns": "any",
+        "returns": "Promise<StatusBarInfo>",
         "tags": [],
         "docs": "",
         "complexTypes": [
@@ -105,5 +105,7 @@
       ]
     }
   ],
-  "enums": []
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
 }
