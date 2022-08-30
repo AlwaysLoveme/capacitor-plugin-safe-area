@@ -8,7 +8,10 @@
 <img src="https://img.shields.io/badge/support-IOS-516BEB?style=plastic"/>
 </a>
 <a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
-<img src="https://img.shields.io/badge/npm-V0.0.7-516BEB?style=plastic"/>
+<img src="https://img.shields.io/npm/v/capacitor-plugin-safe-area/latest.svg"/>
+</a>
+<a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
+<img src="https://img.shields.io/npm/dm/capacitor-plugin-safe-area.svg"/>
 </a>
 </p>
 

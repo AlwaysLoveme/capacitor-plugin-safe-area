@@ -4,7 +4,6 @@ import android.os.Build;
 import android.util.Log;
 import android.view.DisplayCutout;
 import android.view.WindowInsets;
-
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
 
@@ -21,13 +20,10 @@ public class SafeArea {
             Log.i(SafeAreaPlugin.class.toString(), "WindowInsets is not available.");
             return this.result(0, 0, 0, 0);
         }
-
         DisplayCutout displayCutout = windowInsets.getDisplayCutout();
         if (displayCutout == null) {
             Log.i(SafeAreaPlugin.class.toString(), "DisplayCutout is not available.");
-            return this.result(0, 0, 0, 0);
         }
-
         float density = this.getDensity(bridge);
         int top = Math.round(displayCutout.getSafeInsetTop() / density);
         int left = Math.round(displayCutout.getSafeInsetLeft() / density);
