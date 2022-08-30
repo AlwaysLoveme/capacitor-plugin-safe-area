@@ -19,9 +19,9 @@ import Foundation
             let scene = UIApplication.shared.connectedScenes.first
             guard let windowScene = scene as? UIWindowScene else { return 0 }
             guard let statusBarManager = windowScene.statusBarManager else { return 0 }
-            statusBarHeight = statusBarManager.statusBarFrame.height
+            statusBarHeight = statusBarManager.statusBarFrame.size.height
         } else {
-            statusBarHeight = UIApplication.shared.statusBarFrame.height
+            statusBarHeight = UIApplication.shared.statusBarFrame.size.height
         }
         return statusBarHeight
     }
