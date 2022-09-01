@@ -40,25 +40,61 @@ SafeArea.getStatusBarHeight().then(({statusBarHeight}) => {
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`getSafeAreaInsets()`](#getsafeareainsets)
+* [`getStatusBarHeight()`](#getstatusbarheight)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### getSafeAreaInsets()
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+getSafeAreaInsets() => Promise<SafeAreaInsets>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#safeareainsets">SafeAreaInsets</a>&gt;</code>
 
 --------------------
+
+
+### getStatusBarHeight()
+
+```typescript
+getStatusBarHeight() => Promise<StatusBarInfo>
+```
+
+**Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### SafeAreaInsets
+
+| Prop         | Type                                          |
+| ------------ | --------------------------------------------- |
+| **`insets`** | <code><a href="#safearea">SafeArea</a></code> |
+
+
+#### SafeArea
+
+| Prop         | Type                |
+| ------------ | ------------------- |
+| **`top`**    | <code>number</code> |
+| **`right`**  | <code>number</code> |
+| **`bottom`** | <code>number</code> |
+| **`left`**   | <code>number</code> |
+
+
+#### StatusBarInfo
+
+| Prop                  | Type                |
+| --------------------- | ------------------- |
+| **`statusBarHeight`** | <code>number</code> |
 
 </docgen-api>
