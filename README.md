@@ -18,6 +18,8 @@ a capacitor V3/V4 plugin to get SafeArea info on Android and IOS
 
 if you are use Capacitor 3.x , please install version 0.0.x , and version 1.x.x for Capacitor 4.x
 
+> I'm glad if this plugin helped you, please give it a star
+
 ## Install
 
 ```bash
