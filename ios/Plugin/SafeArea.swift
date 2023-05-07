@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @objc public class SafeArea: NSObject {
     @objc public func getWindow() -> UIWindow? {
