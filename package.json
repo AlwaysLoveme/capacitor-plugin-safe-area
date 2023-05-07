@@ -1,7 +1,7 @@
 {
   "name": "capacitor-plugin-safe-area",
-  "version": "1.0.0",
-  "description": "a capacitor V3/V4 plugin to get SafeArea info on Android and IOS",
+  "version": "2.0.0",
+  "description": "a capacitor V3+ plugin to get SafeArea info on Android and IOS",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -44,10 +44,10 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "5.0.0-beta.3",
-    "@capacitor/core": "5.0.0-beta.3",
+    "@capacitor/android": "^5.0.1",
+    "@capacitor/core": "^5.0.1",
     "@capacitor/docgen": "^0.2.1",
-    "@capacitor/ios": "5.0.0-beta.3",
+    "@capacitor/ios": "^5.0.1",
     "@ionic/eslint-config": "^0.3.0",
     "@ionic/prettier-config": "^2.1.2",
     "@ionic/swiftlint-config": "^1.1.2",
@@ -60,7 +60,7 @@
     "typescript": "4.9.5"
   },
   "peerDependencies": {
-    "@capacitor/core": "5.0.0-beta.3"
+    "@capacitor/core": "^5.0.0"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",
