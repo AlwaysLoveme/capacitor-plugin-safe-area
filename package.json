@@ -1,11 +1,12 @@
 {
   "name": "capacitor-plugin-safe-area",
-  "version": "1.0.1",
-  "description": "a capacitor V3/V4 plugin to get SafeArea info on Android and IOS",
+  "version": "2.0.0",
+  "description": "a capacitor V3+ plugin to get SafeArea info on Android and IOS",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
+  "type": "module",
   "files": [
     "android/src/main/",
     "android/build.gradle",
@@ -44,23 +45,23 @@
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@capacitor/android": "^4.0.0",
-    "@capacitor/core": "^4.0.0",
-    "@capacitor/docgen": "^0.2.0",
-    "@capacitor/ios": "^4.0.0",
+    "@capacitor/android": "^5.0.1",
+    "@capacitor/core": "^5.0.1",
+    "@capacitor/docgen": "^0.2.1",
+    "@capacitor/ios": "^5.0.1",
     "@ionic/eslint-config": "^0.3.0",
-    "@ionic/prettier-config": "^1.0.1",
+    "@ionic/prettier-config": "^2.1.2",
     "@ionic/swiftlint-config": "^1.1.2",
-    "eslint": "^7.11.0",
-    "prettier": "~2.3.0",
-    "prettier-plugin-java": "~1.0.2",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.32.0",
-    "swiftlint": "^1.0.1",
-    "typescript": "~4.1.5"
+    "eslint": "^8.39.0",
+    "prettier": "~2.8.8",
+    "prettier-plugin-java": "~2.1.0",
+    "rimraf": "^5.0.0",
+    "rollup": "^3.21.0",
+    "swiftlint": "^1.0.2",
+    "typescript": "^5.0.4"
   },
   "peerDependencies": {
-    "@capacitor/core": "^4.0.0"
+    "@capacitor/core": "^5.0.0"
   },
   "prettier": "@ionic/prettier-config",
   "swiftlint": "@ionic/swiftlint-config",

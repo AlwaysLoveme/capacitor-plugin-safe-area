@@ -6,6 +6,9 @@
   <a href="https://img.shields.io/badge/support-Android-516BEB?logo=android&logoColor=white&style=plastic">
     <img src="https://img.shields.io/badge/support-IOS-516BEB?style=plastic">
   </a>
+  <a href="https://img.shields.io/badge/support-Android-516BEA?logo=ios&logoColor=white&style=plastic">
+    <img src="https://img.shields.io/badge/support-Capacitor v5-516BEA?style=plastic">
+  </a>
   <a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
     <img src="https://img.shields.io/npm/v/capacitor-plugin-safe-area/latest.svg">
   </a>
@@ -14,9 +17,11 @@
   </a>
 </p>
 
-a capacitor V3/V4 plugin to get SafeArea info on Android and IOS
+a capacitor plugin to get SafeArea info on Android and IOS, now it's also support Capacitor v5 with version@2.0.0+
 
-if you are use Capacitor 3.x , please install version 0.0.x , and version 1.x.x for Capacitor 4.x
+if you are using Capacitor 3.x , please install version 0.0.x , and version 1.x.x for Capacitor 4.x
+
+> I'm glad if this plugin helped you, please give it a star
 
 ## Install
 
@@ -54,10 +59,10 @@ SafeArea.getStatusBarHeight().then(({statusBarHeight}) => {
 ### getSafeAreaInsets()
 
 ```typescript
-getSafeAreaInsets() => Promise<SafeAreaInsets>
+getSafeAreaInsets() => any
 ```
 
-**Returns:** <code>Promise&lt;<a href="#safeareainsets">SafeAreaInsets</a>&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
@@ -65,10 +70,10 @@ getSafeAreaInsets() => Promise<SafeAreaInsets>
 ### getStatusBarHeight()
 
 ```typescript
-getStatusBarHeight() => Promise<StatusBarInfo>
+getStatusBarHeight() => any
 ```
 
-**Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
+**Returns:** <code>any</code>
 
 --------------------
 
