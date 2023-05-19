@@ -15,8 +15,6 @@ export class SafeAreaWeb extends WebPlugin implements SafeAreaPlugin {
     };
   }
   async getStatusBarHeight(): Promise<StatusBarInfo> {
-    return {
-      statusBarHeight: 0
-    };
+    throw this.unimplemented('Method not supported on Web.');
   }
 }

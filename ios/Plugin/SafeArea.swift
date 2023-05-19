@@ -1,13 +1,24 @@
 import Foundation
 import UIKit
 
+
 @objc public class SafeArea: NSObject {
+
     @objc public func getWindow() -> UIWindow? {
         if #available(iOS 13, *) {
             return UIApplication.shared.windows.first { $0.isKeyWindow }
         } else {
             return UIApplication.shared.keyWindow
         }
+    }
+    
+    
+    @objc public func getSafeAreaInsets() -> UIEdgeInsets {
+        let window: UIWindow? = self.getWindow();
+        if #available(iOS 11.0, *) {
+            return window?.safeAreaInsets ?? .zero
+        }
+        return .zero
     }
 
     @objc public func getStatusBarHeight() -> CGFloat {

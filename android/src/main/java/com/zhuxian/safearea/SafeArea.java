@@ -21,11 +21,16 @@ public class SafeArea {
             Log.i(SafeAreaPlugin.class.toString(), "WindowInsets is not available.");
             return this.result(0, 0, 0, 0);
         }
-        float density = this.getDensity(bridge);
-        int top = Math.round(windowInsets.getStableInsetTop() / density);
-        int left = Math.round(windowInsets.getStableInsetLeft() / density);
-        int right = Math.round(windowInsets.getStableInsetRight() / density);
-        int bottom = Math.round(windowInsets.getStableInsetBottom() / density);
+        int top = dpToPixels(windowInsets.getStableInsetTop(), bridge);
+        int left = dpToPixels(windowInsets.getStableInsetLeft(), bridge);
+        int right = dpToPixels(windowInsets.getStableInsetRight(), bridge);
+        int bottom = dpToPixels(windowInsets.getStableInsetBottom(), bridge);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            top = (int) (dpToPixels(windowInsets.getDisplayCutout().getSafeInsetTop(), bridge) + 3f);
+            left = dpToPixels(windowInsets.getDisplayCutout().getSafeInsetLeft(), bridge);
+            right = dpToPixels(windowInsets.getDisplayCutout().getSafeInsetRight(), bridge);
+            bottom = dpToPixels(windowInsets.getDisplayCutout().getSafeInsetBottom(), bridge);
+        }
 
         return this.result(top, left, right, bottom);
     }
@@ -41,13 +46,18 @@ public class SafeArea {
         return Math.round(top / density);
     }
 
-    private JSObject result(int top, int left, int right, int bottom) {
+    public JSObject result(int top, int left, int right, int bottom) {
         JSObject json = new JSObject();
         json.put("top", top);
         json.put("left", left);
         json.put("right", right);
         json.put("bottom", bottom);
         return json;
+    }
+
+    public int dpToPixels(int dp, Bridge bridge) {
+        float density = this.getDensity(bridge);
+        return (int) Math.round(dp / density);
     }
 
     private float getDensity(Bridge bridge) {
