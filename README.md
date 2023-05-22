@@ -61,10 +61,10 @@ eventListener.remove();
 
 <docgen-index>
 
-- [`getSafeAreaInsets()`](#getsafeareainsets)
-- [`getStatusBarHeight()`](#getstatusbarheight)
-- [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged)
-- [Interfaces](#interfaces)
+* [`getSafeAreaInsets()`](#getsafeareainsets)
+* [`getStatusBarHeight()`](#getstatusbarheight)
+* [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -74,22 +74,28 @@ eventListener.remove();
 ### getSafeAreaInsets()
 
 ```typescript
-getSafeAreaInsets() => any
+getSafeAreaInsets() => Promise<SafeAreaInsets>
 ```
 
-**Returns:** <code>any</code>
+get mobile <a href="#safearea">SafeArea</a> info
 
----
+**Returns:** <code>Promise&lt;<a href="#safeareainsets">SafeAreaInsets</a>&gt;</code>
+
+--------------------
+
 
 ### getStatusBarHeight()
 
 ```typescript
-getStatusBarHeight() => any
+getStatusBarHeight() => Promise<StatusBarInfo>
 ```
 
-**Returns:** <code>any</code>
+get mobile statusbar height
 
----
+**Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
+
+--------------------
+
 
 ### addListener('safeAreaChanged', ...)
 
@@ -104,17 +110,20 @@ event listener when safe-area changed
 | **`event`**        | <code>'safeAreaChanged'</code>                                               |
 | **`listenerFunc`** | <code>(data: <a href="#safeareainsets">SafeAreaInsets</a>) =&gt; void</code> |
 
-**Returns:** <code>any</code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
 
----
+--------------------
+
 
 ### Interfaces
+
 
 #### SafeAreaInsets
 
 | Prop         | Type                                          |
 | ------------ | --------------------------------------------- |
 | **`insets`** | <code><a href="#safearea">SafeArea</a></code> |
+
 
 #### SafeArea
 
@@ -125,16 +134,18 @@ event listener when safe-area changed
 | **`bottom`** | <code>number</code> |
 | **`left`**   | <code>number</code> |
 
+
 #### StatusBarInfo
 
 | Prop                  | Type                |
 | --------------------- | ------------------- |
 | **`statusBarHeight`** | <code>number</code> |
 
+
 #### PluginListenerHandle
 
-| Prop         | Type                      |
-| ------------ | ------------------------- |
-| **`remove`** | <code>() =&gt; any</code> |
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
 
 </docgen-api>
