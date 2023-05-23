@@ -35,7 +35,7 @@ public class SafeAreaPlugin: CAPPlugin {
     private func handleSafeAreaChange() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let safeAreaInsets = implementation.getSafeAreaInsets()
+            let safeAreaInsets = self.implementation.getSafeAreaInsets()
             self.notifyWebAboutSafeAreaChanges(safeAreaInsets)
         }
     }
