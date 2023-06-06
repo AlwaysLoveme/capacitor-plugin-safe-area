@@ -39,7 +39,7 @@ public class SafeArea {
                 top = displayCutout.getSafeInsetTop();
                 left = displayCutout.getSafeInsetLeft();
                 right = displayCutout.getSafeInsetRight();
-                bottom = displayCutout.getSafeInsetBottom();
+                bottom = Math.max(displayCutout.getSafeInsetBottom(), bottom);
 
                 if(!this.getStatusBarVisible()) {
                     top = Math.max(windowInsets.getStableInsetTop(), top);
