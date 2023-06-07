@@ -1,5 +1,7 @@
 package com.capacitor.safearea;
 
+import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -16,8 +18,10 @@ public class SafeAreaPlugin extends Plugin {
     private static final String Bar_Height = "statusBarHeight";
     private final SafeArea safeAreaInsets = new SafeArea();
 
-    private ViewTreeObserver.OnGlobalLayoutListener layoutListener;
+    private OrientationEventListener orientationEventListener;
     private boolean isListening = false;
+
+    private int lastOrientation = -1;
 
 
     @Override
@@ -28,10 +32,17 @@ public class SafeAreaPlugin extends Plugin {
 
     private void startListeningForSafeAreaChanges() {
         if (!isListening) {
-            FrameLayout rootView = bridge.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-
-            layoutListener = this::detectSafeAreaChanges;
-            rootView.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+            orientationEventListener = new OrientationEventListener(bridge.getActivity()) {
+                @Override
+                public void onOrientationChanged(int orientation) {
+                    int currentOrientation = bridge.getActivity().getWindowManager().getDefaultDisplay().getRotation();
+                    if (currentOrientation != lastOrientation) {
+                        lastOrientation = currentOrientation;
+                        detectSafeAreaChanges();
+                    }
+                }
+            };
+            orientationEventListener.enable();
 
             isListening = true;
         }
@@ -46,9 +57,7 @@ public class SafeAreaPlugin extends Plugin {
     @PluginMethod
     public void stopListeningForSafeAreaChanges(PluginCall call) {
         if (isListening) {
-            FrameLayout rootView = bridge.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-            rootView.getViewTreeObserver().removeOnGlobalLayoutListener(layoutListener);
-            rootView.setOnApplyWindowInsetsListener(null);
+            orientationEventListener.disable();
             isListening = false;
         }
         call.resolve();
