@@ -63,6 +63,7 @@ eventListener.remove();
 
 * [`getSafeAreaInsets()`](#getsafeareainsets)
 * [`getStatusBarHeight()`](#getstatusbarheight)
+* [`setImmersiveNavigationBar()`](#setimmersivenavigationbar)
 * [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged)
 * [Interfaces](#interfaces)
 
@@ -93,6 +94,17 @@ getStatusBarHeight() => Promise<StatusBarInfo>
 get mobile statusbar height
 
 **Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
+
+--------------------
+
+
+### setImmersiveNavigationBar()
+
+```typescript
+setImmersiveNavigationBar() => Promise<void>
+```
+
+set navigation bar immersive on Android , not implemented on IOS
 
 --------------------
 

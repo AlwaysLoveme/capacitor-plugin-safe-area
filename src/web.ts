@@ -20,4 +20,8 @@ export class SafeAreaWeb extends WebPlugin implements SafeAreaPlugin {
       statusBarHeight: 0
     }
   }
+
+  setImmersiveNavigationBar(): Promise<void> {
+    throw this.unimplemented('Method not supported on Web.');
+  }
 }

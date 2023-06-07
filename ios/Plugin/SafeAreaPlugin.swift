@@ -88,7 +88,6 @@ public class SafeAreaPlugin: CAPPlugin {
                     ],
                 ])
             }
-            
         }
     }
     
@@ -104,6 +103,10 @@ public class SafeAreaPlugin: CAPPlugin {
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
         }
+        call.resolve();
+    }
+
+    @objc func setImmersiveNavigationBar(_ call: CAPPluginCall) {
         call.resolve();
     }
     

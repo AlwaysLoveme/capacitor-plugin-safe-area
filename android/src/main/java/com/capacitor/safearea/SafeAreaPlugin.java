@@ -1,7 +1,10 @@
 package com.capacitor.safearea;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.OrientationEventListener;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -46,6 +49,13 @@ public class SafeAreaPlugin extends Plugin {
 
             isListening = true;
         }
+    }
+
+    @PluginMethod
+    public void setImmersiveNavigationBar(PluginCall call) {
+        bridge.getActivity().runOnUiThread(() -> bridge.getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE));
+        call.resolve();
     }
 
     @PluginMethod

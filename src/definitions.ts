@@ -10,6 +10,10 @@ export interface SafeAreaPlugin {
    */
   getStatusBarHeight(): Promise<StatusBarInfo>;
   /**
+   * set navigation bar immersive on Android , not implemented on IOS
+   */
+  setImmersiveNavigationBar(): Promise<void>;
+  /**
    * event listener when safe-area changed
    * @param event
    * @param listenerFunc

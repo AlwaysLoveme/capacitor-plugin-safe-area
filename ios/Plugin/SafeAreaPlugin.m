@@ -6,4 +6,5 @@
 CAP_PLUGIN(SafeAreaPlugin, "SafeArea",
           CAP_PLUGIN_METHOD(getSafeAreaInsets, CAPPluginReturnPromise);
           CAP_PLUGIN_METHOD(getStatusBarHeight, CAPPluginReturnPromise);
+          CAP_PLUGIN_METHOD(setImmersiveNavigationBar, CAPPluginReturnPromise);
 )
