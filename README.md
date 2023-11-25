@@ -44,8 +44,10 @@ SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
   console.log(statusBarHeight, 'statusbarHeight');
 });
 
+await SafeArea.removeAllListeners();
+
 // when safe-area changed
-const eventListener = await SafeArea.addListener('safeAreaChanged', data => {
+await SafeArea.addListener('safeAreaChanged', data => {
   const { insets } = data;
   for (const [key, value] of Object.entries(insets)) {
     document.documentElement.style.setProperty(
@@ -54,7 +56,6 @@ const eventListener = await SafeArea.addListener('safeAreaChanged', data => {
     );
   }
 });
-eventListener.remove();
 ```
 
 ## API
@@ -123,6 +124,18 @@ event listener when safe-area changed
 | **`listenerFunc`** | <code>(data: <a href="#safeareainsets">SafeAreaInsets</a>) =&gt; void</code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+
+--------------------
+
+### removeAllListeners()
+
+```typescript
+removeAllListeners(): Promise<void>
+```
+
+Capacitor plugin method to remove all registered listeners
+
+**Returns:** <code>Promise&lt;void&gt;</code>
 
 --------------------
 
