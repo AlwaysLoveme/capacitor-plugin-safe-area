@@ -66,6 +66,7 @@ await SafeArea.addListener('safeAreaChanged', data => {
 * [`getStatusBarHeight()`](#getstatusbarheight)
 * [`setImmersiveNavigationBar()`](#setimmersivenavigationbar)
 * [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged)
+* [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 
 </docgen-index>
@@ -79,7 +80,7 @@ await SafeArea.addListener('safeAreaChanged', data => {
 getSafeAreaInsets() => Promise<SafeAreaInsets>
 ```
 
-get mobile <a href="#safearea">SafeArea</a> info
+Get mobile <a href="#safearea">SafeArea</a> info
 
 **Returns:** <code>Promise&lt;<a href="#safeareainsets">SafeAreaInsets</a>&gt;</code>
 
@@ -92,7 +93,7 @@ get mobile <a href="#safearea">SafeArea</a> info
 getStatusBarHeight() => Promise<StatusBarInfo>
 ```
 
-get mobile statusbar height
+Get mobile statusbar height
 
 **Returns:** <code>Promise&lt;<a href="#statusbarinfo">StatusBarInfo</a>&gt;</code>
 
@@ -105,7 +106,7 @@ get mobile statusbar height
 setImmersiveNavigationBar() => Promise<void>
 ```
 
-set navigation bar immersive on Android , not implemented on IOS
+Set navigation bar immersive on Android , not implemented on IOS
 
 --------------------
 
@@ -116,7 +117,7 @@ set navigation bar immersive on Android , not implemented on IOS
 addListener(event: 'safeAreaChanged', listenerFunc: (data: SafeAreaInsets) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
 ```
 
-event listener when safe-area changed
+Event listener when safe-area changed
 
 | Param              | Type                                                                         |
 | ------------------ | ---------------------------------------------------------------------------- |
@@ -127,15 +128,14 @@ event listener when safe-area changed
 
 --------------------
 
+
 ### removeAllListeners()
 
 ```typescript
-removeAllListeners(): Promise<void>
+removeAllListeners() => Promise<void>
 ```
 
-Capacitor plugin method to remove all registered listeners
-
-**Returns:** <code>Promise&lt;void&gt;</code>
+Capacitor plugin method to remove all created listeners
 
 --------------------
 
