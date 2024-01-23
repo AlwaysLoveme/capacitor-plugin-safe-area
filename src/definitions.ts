@@ -28,6 +28,7 @@ export interface SafeAreaPlugin {
 
   /**
    * Capacitor plugin method to remove all created listeners
+   * @deprecated use `SafeArea.removeAllListeners()` instead
    */
   removeAllListeners (): Promise<void>
 }

@@ -3,6 +3,7 @@ package com.capacitor.safearea;
 import android.util.Log;
 
 import android.os.Build;
+import android.os.View;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
@@ -39,10 +40,15 @@ public class SafeArea {
                 top = displayCutout.getSafeInsetTop();
                 left = displayCutout.getSafeInsetLeft();
                 right = displayCutout.getSafeInsetRight();
-                bottom = Math.max(displayCutout.getSafeInsetBottom(), bottom);
+                bottom = displayCutout.getSafeInsetBottom();
+                
 
                 if(!this.getStatusBarVisible()) {
                     top = Math.max(windowInsets.getStableInsetTop(), top);
+                }
+
+                if(!this.tabBarIsVisible()) {
+                    bottom = Math.max(displayCutout.getSafeInsetBottom(), bottom);
                 }
             }
 
@@ -50,12 +56,19 @@ public class SafeArea {
         return this.result(top, left, right, bottom);
     }
 
+    // 判断是否是沉浸式状态栏
     private Boolean getStatusBarVisible() {
         WindowInsets windowInsets = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             windowInsets = this.bridge.getActivity().getWindow().getDecorView().getRootWindowInsets();
         }
         return  windowInsets != null && windowInsets.getSystemWindowInsetTop() == 0;
+    }
+
+    // 判断是否是沉浸式导航栏
+    private Boolean tabBarIsVisible() {
+        int uiOptions = this.bridge.getWindow().getDecorView().getSystemUiVisibility();
+        return (uiOptions & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     public int getStatusBarHeight() {
