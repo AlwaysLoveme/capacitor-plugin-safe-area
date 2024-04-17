@@ -2,23 +2,23 @@
 
 <p align="left">
   <a href="https://img.shields.io/badge/support-Android-516BEB?logo=android&logoColor=white&style=plastic">
-    <img src="https://img.shields.io/badge/support-Android-516BEB?style=plastic">
+    <img src="https://img.shields.io/badge/support-Android-516BEB?style=plastic"  alt="" >
   </a>
   <a href="https://img.shields.io/badge/support-Android-516BEB?logo=android&logoColor=white&style=plastic">
-    <img src="https://img.shields.io/badge/support-IOS-516BEB?style=plastic">
+    <img src="https://img.shields.io/badge/support-IOS-516BEB?style=plastic" alt="">
   </a>
   <a href="https://img.shields.io/badge/support-Android-516BEA?logo=ios&logoColor=white&style=plastic">
-    <img src="https://img.shields.io/badge/support-Capacitor v6-516BEA?style=plastic">
+    <img src="https://img.shields.io/badge/support-Capacitor v6-516BEA?style=plastic" alt="">
   </a>
   <a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
-    <img src="https://img.shields.io/npm/v/capacitor-plugin-safe-area/latest.svg">
+    <img src="https://img.shields.io/npm/v/capacitor-plugin-safe-area/latest.svg" alt="">
   </a>
   <a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
-    <img src="https://img.shields.io/npm/dm/capacitor-plugin-safe-area.svg"/>
+    <img src="https://img.shields.io/npm/dm/capacitor-plugin-safe-area.svg" alt=""/>
   </a>
 </p>
 
-a capacitor plugin to get SafeArea info on Android and IOS, latest version is support for Capacitor v6.
+#### a capacitor plugin to get SafeArea info on Android and IOS, latest version is support for Capacitor v6.
 
 ### Version Support
 - [x] v3.0.0 support Capacitor v6
