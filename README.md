@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/support-IOS-516BEB?style=plastic">
   </a>
   <a href="https://img.shields.io/badge/support-Android-516BEA?logo=ios&logoColor=white&style=plastic">
-    <img src="https://img.shields.io/badge/support-Capacitor v5-516BEA?style=plastic">
+    <img src="https://img.shields.io/badge/support-Capacitor v6-516BEA?style=plastic">
   </a>
   <a href="https://www.npmjs.com/package/capacitor-plugin-safe-area">
     <img src="https://img.shields.io/npm/v/capacitor-plugin-safe-area/latest.svg">
@@ -18,16 +18,20 @@
   </a>
 </p>
 
-a capacitor plugin to get SafeArea info on Android and IOS, now it's also support Capacitor v5 with version@2.0.0+
+a capacitor plugin to get SafeArea info on Android and IOS, latest version is support for Capacitor v6.
 
-if you are using Capacitor 3.x , please install version 0.0.x , and version 1.x.x for Capacitor 4.x
+### Version Support
+- [x] v3.0.0 support Capacitor v6
+- [x] v2.0.0 support Capacitor v5
+- [x] v1.0.0 support Capacitor v4
+- [x] v0.0.1 support Capacitor v3
 
-> I'm glad if this plugin helped you, please give it a star
+> I'm very glad if the plugin helped you, please give it a star
 
 ## Install
 
 ```bash
-npm install capacitor-plugin-safe-area
+npm install capacitor-plugin-safe-area@latest
 npx cap sync
 ```
 
@@ -65,7 +69,7 @@ await SafeArea.addListener('safeAreaChanged', data => {
 * [`getSafeAreaInsets()`](#getsafeareainsets)
 * [`getStatusBarHeight()`](#getstatusbarheight)
 * [`setImmersiveNavigationBar()`](#setimmersivenavigationbar)
-* [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged)
+* [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 
@@ -114,7 +118,7 @@ Set navigation bar immersive on Android , not implemented on IOS
 ### addListener('safeAreaChanged', ...)
 
 ```typescript
-addListener(event: 'safeAreaChanged', listenerFunc: (data: SafeAreaInsets) => void) => Promise<PluginListenerHandle> & PluginListenerHandle
+addListener(event: 'safeAreaChanged', listenerFunc: (data: SafeAreaInsets) => void) => Promise<PluginListenerHandle>
 ```
 
 Event listener when safe-area changed
@@ -124,7 +128,7 @@ Event listener when safe-area changed
 | **`event`**        | <code>'safeAreaChanged'</code>                                               |
 | **`listenerFunc`** | <code>(data: <a href="#safeareainsets">SafeAreaInsets</a>) =&gt; void</code> |
 
-**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt; & <a href="#pluginlistenerhandle">PluginListenerHandle</a></code>
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
 --------------------
 
@@ -135,7 +139,7 @@ Event listener when safe-area changed
 removeAllListeners() => Promise<void>
 ```
 
-Capacitor plugin method to remove all created listeners
+Remove all native listeners for this plugin
 
 --------------------
 

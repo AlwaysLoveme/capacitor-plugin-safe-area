@@ -3,12 +3,12 @@ package com.capacitor.safearea;
 import android.util.Log;
 
 import android.os.Build;
-import android.os.View;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
 
 import android.view.DisplayCutout;
+import android.view.View;
 import android.view.WindowInsets;
 
 public class SafeArea {
@@ -67,8 +67,8 @@ public class SafeArea {
 
     // 判断是否是沉浸式导航栏
     private Boolean tabBarIsVisible() {
-        int uiOptions = this.bridge.getWindow().getDecorView().getSystemUiVisibility();
-        return (uiOptions & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        int uiOptions = this.bridge.getActivity().getWindow().getDecorView().getSystemUiVisibility();
+        return (uiOptions & View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION) == View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
     }
 
     public int getStatusBarHeight() {

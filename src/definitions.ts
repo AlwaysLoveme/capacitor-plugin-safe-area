@@ -1,36 +1,35 @@
-import type { PluginListenerHandle } from '@capacitor/core'
+import type { PluginListenerHandle } from '@capacitor/core';
 
 export interface SafeAreaPlugin {
   /**
    *  Get mobile SafeArea info
    */
-  getSafeAreaInsets (): Promise<SafeAreaInsets>;
+  getSafeAreaInsets(): Promise<SafeAreaInsets>;
 
   /**
    * Get mobile statusbar height
    */
-  getStatusBarHeight (): Promise<StatusBarInfo>;
+  getStatusBarHeight(): Promise<StatusBarInfo>;
 
   /**
    * Set navigation bar immersive on Android , not implemented on IOS
    */
-  setImmersiveNavigationBar (): Promise<void>;
+  setImmersiveNavigationBar(): Promise<void>;
 
   /**
    * Event listener when safe-area changed
    * @param event
    * @param listenerFunc
    */
-  addListener (
+  addListener(
     event: 'safeAreaChanged',
-    listenerFunc: (data: SafeAreaInsets) => void
-  ): Promise<PluginListenerHandle> & PluginListenerHandle;
+    listenerFunc: (data: SafeAreaInsets) => void,
+  ): Promise<PluginListenerHandle>;
 
   /**
-   * Capacitor plugin method to remove all created listeners
-   * @deprecated use `SafeArea.removeAllListeners()` instead
+   * Remove all native listeners for this plugin
    */
-  removeAllListeners (): Promise<void>
+  removeAllListeners(): Promise<void>;
 }
 
 interface SafeArea {
