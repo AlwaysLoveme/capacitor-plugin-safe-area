@@ -55,11 +55,44 @@ await SafeArea.addListener('safeAreaChanged', data => {
   const { insets } = data;
   for (const [key, value] of Object.entries(insets)) {
     document.documentElement.style.setProperty(
-      `--safe-area-${key}`,
+      `--safe-area-inset-${key}`,
       `${value}px`,
     );
   }
 });
+```
+
+## Use with TailwindCSS
+ Use `TailwindCSS` with the `plugin`:  [https://github.com/mahyarmirrashed/tailwindcss-safe-area-capacitor](https://github.com/mahyarmirrashed/tailwindcss-safe-area-capacitor)
+
+ For more usage, please refer to the plugin repo
+
+```tsx
+import {useEffect} from 'react';
+import { SafeArea } from 'capacitor-plugin-safe-area';
+
+import type {FC} from 'react';
+
+const App = () => {
+    useEffect(() => {
+        (async function(){
+            const safeAreaData = await SafeArea.getSafeAreaInsets();
+            const {insets} = safeAreaData;
+            for (const [key, value] of Object.entries(insets)) {
+                document.documentElement.style.setProperty(
+                    `--safe-area-inset-${key}`,
+                    `${value}px`,
+                );
+            }
+        })()
+    }, []);
+    return (
+        <div className="pb-safe toolbar">
+            <div>....</div>
+        </div>
+    )
+}
+export default App;
 ```
 
 ## API
