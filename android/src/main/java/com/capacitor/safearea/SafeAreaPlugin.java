@@ -61,9 +61,11 @@ public class SafeAreaPlugin extends Plugin {
         // and add it to the safe area insets. The native plugin is used to get this info.
         // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094366
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false);
-            window.setStatusBarColor(0);
-            window.setNavigationBarColor(0);
+            bridge.getActivity().runOnUiThread(() -> {
+                window.setDecorFitsSystemWindows(false);
+                window.setStatusBarColor(0);
+                window.setNavigationBarColor(0);
+            });
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // On older versions of android setDecorFitsSystemWindows doesn't exist yet, but it can
             // be emulated with flags.
