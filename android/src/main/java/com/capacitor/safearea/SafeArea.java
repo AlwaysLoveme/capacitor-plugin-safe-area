@@ -24,7 +24,7 @@ public class SafeArea {
             return this.result(0, 0, 0, 0);
         }
         DisplayCutout displayCutout = null;
-        WindowInsets windowInsets = this.bridge.getActivity().getWindow().getDecorView().findViewById(android.R.id.content).getRootWindowInsets();
+        WindowInsets windowInsets = this.bridge.getActivity().getWindow().getDecorView().getRootWindowInsets();
         if (windowInsets == null) {
             Log.i(SafeAreaPlugin.class.toString(), "WindowInsets is not available.");
             return this.result(0, 0, 0, 0);
@@ -36,22 +36,12 @@ public class SafeArea {
         int bottom = windowInsets.getStableInsetBottom();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             displayCutout = windowInsets.getDisplayCutout();
-            if(displayCutout != null) {
-                top = displayCutout.getSafeInsetTop();
-                left = displayCutout.getSafeInsetLeft();
-                right = displayCutout.getSafeInsetRight();
-                bottom = displayCutout.getSafeInsetBottom();
-                
-
-                if(!this.getStatusBarVisible()) {
-                    top = Math.max(windowInsets.getStableInsetTop(), top);
-                }
-
-                if(!this.tabBarIsVisible()) {
-                    bottom = Math.max(displayCutout.getSafeInsetBottom(), bottom);
-                }
+            if (displayCutout != null) {
+                top = Math.max(displayCutout.getSafeInsetTop(), top);
+                left = Math.max(displayCutout.getSafeInsetLeft(), left);
+                right = Math.max(displayCutout.getSafeInsetRight(), right);
+                bottom = Math.max(displayCutout.getSafeInsetBottom(), bottom);
             }
-
         }
         return this.result(top, left, right, bottom);
     }
@@ -62,7 +52,7 @@ public class SafeArea {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             windowInsets = this.bridge.getActivity().getWindow().getDecorView().getRootWindowInsets();
         }
-        return  windowInsets != null && windowInsets.getSystemWindowInsetTop() == 0;
+        return windowInsets != null && windowInsets.getSystemWindowInsetTop() == 0;
     }
 
     // 判断是否是沉浸式导航栏

@@ -9,6 +9,8 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
 
+import androidx.core.view.WindowCompat;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -78,6 +80,19 @@ public class SafeAreaPlugin extends Plugin {
                 window.setStatusBarColor(0);
                 window.setNavigationBarColor(0);
             });
+        } else {
+            bridge.getActivity().runOnUiThread(() -> {
+                window.getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                );
+            });
+
         }
         call.resolve();
     }
