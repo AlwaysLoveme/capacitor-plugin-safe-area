@@ -1,17 +1,24 @@
 import Foundation
 import Capacitor
-import UIKit
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
  */
 @objc(SafeAreaPlugin)
-public class SafeAreaPlugin: CAPPlugin {
+public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
+    public let identifier = "SafeAreaPlugin"
+    public let jsName = "SafeArea"
+    public let pluginMethods: [CAPPluginMethod] = [
+        CAPPluginMethod(name: "getSafeAreaInsets", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getStatusBarHeight", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "setImmersiveNavigationBar", returnType: CAPPluginReturnPromise)
+    ]
     private let implementation = SafeArea()
+    
     private var observer: NSObjectProtocol?
     
-    @objc override public func load() {
+    override public func load() {
         self.startListeningForSafeAreaChanges();
     }
     
@@ -32,6 +39,13 @@ public class SafeAreaPlugin: CAPPlugin {
         }
     }
     
+    deinit {
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+            self.observer = nil
+        }
+    }
+    
     private func handleSafeAreaChange() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -39,7 +53,7 @@ public class SafeAreaPlugin: CAPPlugin {
             self.notifyWebAboutSafeAreaChanges(safeAreaInsets)
         }
     }
-
+    
     
     private func notifyWebAboutSafeAreaChanges(_ safeAreaInsets: UIEdgeInsets) {
         let data: [String: Any] = [
@@ -105,9 +119,8 @@ public class SafeAreaPlugin: CAPPlugin {
         }
         call.resolve();
     }
-
+    
     @objc func setImmersiveNavigationBar(_ call: CAPPluginCall) {
         call.resolve();
     }
-    
 }

@@ -2,7 +2,7 @@ import UIKit
 import Foundation
 
 @objc public class SafeArea: NSObject {
-       @objc public func getWindow() -> UIWindow? {
+    @objc public func getWindow() -> UIWindow? {
         if #available(iOS 13, *) {
             return UIApplication.shared.windows.first { $0.isKeyWindow }
         } else {
@@ -18,7 +18,7 @@ import Foundation
         }
         return .zero
     }
-
+    
     @objc public func getStatusBarHeight() -> CGFloat {
         var statusBarHeight: CGFloat = 0
         if #available(iOS 13.0, *) {
