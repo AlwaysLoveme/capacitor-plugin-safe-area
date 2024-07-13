@@ -1,6 +1,6 @@
 {
   "name": "capacitor-plugin-safe-area",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "a capacitor plugin to get SafeArea info on Android and IOS",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -10,7 +10,9 @@
     "android/src/main/",
     "android/build.gradle",
     "dist/",
-    "ios/Plugin/",
+    "ios/Sources",
+    "ios/Tests",
+    "Package.swift",
     "CapacitorPluginSafeArea.podspec"
   ],
   "author": "zhuxian",
