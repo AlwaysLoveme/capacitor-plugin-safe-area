@@ -35,7 +35,7 @@ npm install capacitor-plugin-safe-area@latest
 npx cap sync
 ```
 
-## Useage
+## Usage
 
 ```typescript
 import { SafeArea } from 'capacitor-plugin-safe-area';
