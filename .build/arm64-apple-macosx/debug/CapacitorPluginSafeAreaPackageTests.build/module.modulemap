@@ -1,4 +1,0 @@
-module CapacitorPluginSafeAreaPackageTests {
-    header "/Users/anonymous/Documents/github/capacitor-plugin-safe-area/.build/arm64-apple-macosx/debug/CapacitorPluginSafeAreaPackageTests.build/CapacitorPluginSafeAreaPackageTests-Swift.h"
-    requires objc
-}
