@@ -1,0 +1,4 @@
+module SafeAreaPlugin {
+    header "/Users/anonymous/Documents/github/capacitor-plugin-safe-area/.build/arm64-apple-macosx/debug/SafeAreaPlugin.build/SafeAreaPlugin-Swift.h"
+    requires objc
+}
