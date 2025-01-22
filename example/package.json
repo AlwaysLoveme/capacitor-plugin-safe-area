@@ -17,8 +17,8 @@
     "@capacitor/camera": "latest",
     "@capacitor/splash-screen": "latest",
     "capacitor-plugin-safe-area": "file:..",
-    "@capacitor/ios": "^5.0.0",
-    "@capacitor/android": "^5.0.0"
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/android": "^7.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",

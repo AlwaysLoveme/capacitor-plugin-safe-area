@@ -21,10 +21,7 @@ export interface SafeAreaPlugin {
    * @param event
    * @param listenerFunc
    */
-  addListener(
-    event: 'safeAreaChanged',
-    listenerFunc: (data: SafeAreaInsets) => void,
-  ): Promise<PluginListenerHandle>;
+  addListener(event: 'safeAreaChanged', listenerFunc: (data: SafeAreaInsets) => void): Promise<PluginListenerHandle>;
 
   /**
    * Remove all native listeners for this plugin

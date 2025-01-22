@@ -15,13 +15,13 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "setImmersiveNavigationBar", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = SafeArea()
-    
+
     private var observer: NSObjectProtocol?
-    
+
     override public func load() {
-        self.startListeningForSafeAreaChanges();
+        self.startListeningForSafeAreaChanges()
     }
-    
+
     // 监听安全区域的变化，通过监听状态栏变化
     @objc private func startListeningForSafeAreaChanges() {
         if observer == nil {
@@ -38,14 +38,14 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
             }
         }
     }
-    
+
     deinit {
         if let observer = observer {
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
         }
     }
-    
+
     private func handleSafeAreaChange() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
@@ -53,8 +53,7 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
             self.notifyWebAboutSafeAreaChanges(safeAreaInsets)
         }
     }
-    
-    
+
     private func notifyWebAboutSafeAreaChanges(_ safeAreaInsets: UIEdgeInsets) {
         let data: [String: Any] = [
             "insets": [
@@ -66,8 +65,7 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
         ]
         self.notifyListeners("safeAreaChanged", data: data)
     }
-    
-    
+
     @objc func getSafeAreaInsets(_ call: CAPPluginCall) {
         var top: CGFloat = 0.00,
             bottom: CGFloat = 0.00,
@@ -75,18 +73,18 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
             left: CGFloat = 0.00
         if #available(iOS 11.0, *) {
             DispatchQueue.main.async {
-                let safeAreaInsets: UIEdgeInsets = self.implementation.getSafeAreaInsets();
-                top = safeAreaInsets.top;
-                right = safeAreaInsets.right;
-                bottom = safeAreaInsets.bottom;
-                left = safeAreaInsets.left;
+                let safeAreaInsets: UIEdgeInsets = self.implementation.getSafeAreaInsets()
+                top = safeAreaInsets.top
+                right = safeAreaInsets.right
+                bottom = safeAreaInsets.bottom
+                left = safeAreaInsets.left
                 call.resolve([
                     "insets": [
                         "top": top,
                         "bottom": bottom,
                         "right": right,
-                        "left": left,
-                    ],
+                        "left": left
+                    ]
                 ])
             }
         } else {
@@ -98,29 +96,29 @@ public class SafeAreaPlugin: CAPPlugin, CAPBridgedPlugin {
                         "top": barHeight,
                         "bottom": bottom,
                         "right": right,
-                        "left": left,
-                    ],
+                        "left": left
+                    ]
                 ])
             }
         }
     }
-    
+
     @objc func getStatusBarHeight(_ call: CAPPluginCall) {
         DispatchQueue.main.async {
             let barHeight = self.implementation.getStatusBarHeight()
             call.resolve(["statusBarHeight": barHeight])
         }
     }
-    
+
     @objc func stopListeningForSafeAreaChanges(_ call: CAPPluginCall) {
         if let observer = observer {
             NotificationCenter.default.removeObserver(observer)
             self.observer = nil
         }
-        call.resolve();
+        call.resolve()
     }
-    
+
     @objc func setImmersiveNavigationBar(_ call: CAPPluginCall) {
-        call.resolve();
+        call.resolve()
     }
 }

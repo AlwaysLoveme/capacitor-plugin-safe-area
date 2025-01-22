@@ -9,16 +9,15 @@ import Foundation
             return UIApplication.shared.keyWindow
         }
     }
-    
-    
+
     @objc public func getSafeAreaInsets() -> UIEdgeInsets {
-        let window: UIWindow? = self.getWindow();
+        let window: UIWindow? = self.getWindow()
         if #available(iOS 11.0, *) {
             return window?.safeAreaInsets ?? .zero
         }
         return .zero
     }
-    
+
     @objc public func getStatusBarHeight() -> CGFloat {
         var statusBarHeight: CGFloat = 0
         if #available(iOS 13.0, *) {
