@@ -1,15 +1,17 @@
 package com.capacitor.safearea;
 
-import android.os.Build;
 import android.util.Log;
-import android.view.DisplayCutout;
-import android.view.View;
-import android.view.WindowInsets;
+
+import android.os.Build;
+
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
 
-public class SafeArea {
+import android.view.DisplayCutout;
+import android.view.View;
+import android.view.WindowInsets;
 
+public class SafeArea {
     private Bridge bridge;
 
     public void setBridge(Bridge bridge) {

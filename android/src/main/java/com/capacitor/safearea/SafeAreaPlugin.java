@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
+
 import androidx.core.view.WindowCompat;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -26,6 +28,7 @@ public class SafeAreaPlugin extends Plugin {
     private boolean isListening = false;
 
     private int lastOrientation = -1;
+
 
     @Override
     public void load() {
@@ -51,6 +54,7 @@ public class SafeAreaPlugin extends Plugin {
         }
     }
 
+
     @PluginMethod
     public void setImmersiveNavigationBar(PluginCall call) {
         Window window = bridge.getActivity().getWindow();
@@ -59,45 +63,36 @@ public class SafeAreaPlugin extends Plugin {
         // and add it to the safe area insets. The native plugin is used to get this info.
         // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094366
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            bridge
-                .getActivity()
-                .runOnUiThread(() -> {
-                    window.setDecorFitsSystemWindows(false);
-                    window.setStatusBarColor(0);
-                    window.setNavigationBarColor(0);
-                });
+            bridge.getActivity().runOnUiThread(() -> {
+                window.setDecorFitsSystemWindows(false);
+                window.setStatusBarColor(0);
+                window.setNavigationBarColor(0);
+            });
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // On older versions of android setDecorFitsSystemWindows doesn't exist yet, but it can
             // be emulated with flags.
             // It still must be P or greater, as that is the min version for getting the insets
-            bridge
-                .getActivity()
-                .runOnUiThread(() -> {
-                    View decorView = window.getDecorView();
-                    decorView.setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-                    );
-                    window.setStatusBarColor(0);
-                    window.setNavigationBarColor(0);
-                });
+            bridge.getActivity().runOnUiThread(() -> {
+                View decorView = window.getDecorView();
+                decorView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                );
+                window.setStatusBarColor(0);
+                window.setNavigationBarColor(0);
+            });
         } else {
-            bridge
-                .getActivity()
-                .runOnUiThread(() -> {
-                    window
-                        .getDecorView()
-                        .setSystemUiVisibility(
-                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                            View.SYSTEM_UI_FLAG_FULLSCREEN |
-                            View.SYSTEM_UI_FLAG_LOW_PROFILE
-                        );
-                });
+            bridge.getActivity().runOnUiThread(() -> {
+                window.getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                                | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                );
+            });
+
         }
         call.resolve();
     }
@@ -123,6 +118,7 @@ public class SafeAreaPlugin extends Plugin {
         notifyListeners("safeAreaChanged", ret);
     }
 
+
     @PluginMethod
     public void getSafeAreaInsets(PluginCall call) {
         JSObject ret = new JSObject();
@@ -137,3 +133,4 @@ public class SafeAreaPlugin extends Plugin {
         call.resolve(ret);
     }
 }
+

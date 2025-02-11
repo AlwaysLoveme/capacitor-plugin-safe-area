@@ -21,7 +21,6 @@
 #### a capacitor plugin to get SafeArea info on Android and IOS, latest version is support for Capacitor v6.
 
 ### Version Support
-- [x] v4.0.0 support Capacitor v7
 - [x] v3.0.0 support Capacitor v6
 - [x] v2.0.0 support Capacitor v5
 - [x] v1.0.0 support Capacitor v4
