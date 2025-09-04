@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.view.WindowInsetsController;
 
 import androidx.core.view.WindowCompat;
 
@@ -62,7 +63,18 @@ public class SafeAreaPlugin extends Plugin {
         // and nav bar. Due to a chromium bug, we need to get the height of both bars
         // and add it to the safe area insets. The native plugin is used to get this info.
         // See https://bugs.chromium.org/p/chromium/issues/detail?id=1094366
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+        // for android 15+ (API v34) use the new API
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            bridge.getActivity().runOnUiThread(() -> {
+                window.setDecorFitsSystemWindows(false);
+                window.getInsetsController().setSystemBarsAppearance(
+                    0,
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                );
+                window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             bridge.getActivity().runOnUiThread(() -> {
                 window.setDecorFitsSystemWindows(false);
                 window.setStatusBarColor(0);
