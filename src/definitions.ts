@@ -12,10 +12,18 @@ export interface SafeAreaPlugin {
   getStatusBarHeight(): Promise<StatusBarInfo>;
 
   /**
-   * Set navigation bar immersive on Android , not implemented on IOS
+   * Set navigation bar immersive on Android , statusbar background is always set to transparent, not implemented on IOS
+   * @param options.statusBarStyle - statusbar style
    */
-  setImmersiveNavigationBar(): Promise<void>;
+  setImmersiveNavigationBar(options?: Pick<NavigationBarOptions, "statusBarStyle">): Promise<void>;
 
+  /**
+   * unset navigation bar immersive on Android , not implemented on IOS
+   * @param options.statusBarBg - statusbar background color, default is transparent
+   * @param options.statusBarStyle - statusbar style
+   */
+  unsetImmersiveNavigationBar(options?: NavigationBarOptions): Promise<void>;
+  
   /**
    * Event listener when safe-area changed
    * @param event
@@ -45,4 +53,19 @@ export interface SafeAreaInsets {
 
 export interface StatusBarInfo {
   statusBarHeight: number;
+}
+
+export enum StatusbarStyle {
+  Light = 'light',
+  Dark = 'dark',
+}
+export interface NavigationBarOptions {
+  /**
+   * statusbar background color, default is transparent
+   */
+  statusBarBg?: string;
+  /**
+   * statusbar style
+   */
+  statusBarStyle?: StatusbarStyle;
 }

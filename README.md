@@ -43,6 +43,12 @@ import { SafeArea } from 'capacitor-plugin-safe-area';
 
 SafeArea.getSafeAreaInsets().then(({ insets }) => {
   console.log(insets);
+  for (const [key, value] of Object.entries(insets)) {
+    document.documentElement.style.setProperty(
+      `--safe-area-inset-${key}`,
+      `${value}px`,
+    );
+  }
 });
 
 SafeArea.getStatusBarHeight().then(({ statusBarHeight }) => {
@@ -102,10 +108,13 @@ export default App;
 
 * [`getSafeAreaInsets()`](#getsafeareainsets)
 * [`getStatusBarHeight()`](#getstatusbarheight)
-* [`setImmersiveNavigationBar()`](#setimmersivenavigationbar)
+* [`setImmersiveNavigationBar(...)`](#setimmersivenavigationbar)
+* [`unsetImmersiveNavigationBar(...)`](#unsetimmersivenavigationbar)
 * [`addListener('safeAreaChanged', ...)`](#addlistenersafeareachanged-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
+* [Enums](#enums)
 
 </docgen-index>
 
@@ -138,13 +147,32 @@ Get mobile statusbar height
 --------------------
 
 
-### setImmersiveNavigationBar()
+### setImmersiveNavigationBar(...)
 
 ```typescript
-setImmersiveNavigationBar() => Promise<void>
+setImmersiveNavigationBar(options?: Pick<NavigationBarOptions, "statusBarStyle"> | undefined) => Promise<void>
 ```
 
-Set navigation bar immersive on Android , not implemented on IOS
+Set navigation bar immersive on Android , statusbar background is always set to transparent, not implemented on IOS
+
+| Param         | Type                                                                                                                    |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **`options`** | <code><a href="#pick">Pick</a>&lt;<a href="#navigationbaroptions">NavigationBarOptions</a>, 'statusBarStyle'&gt;</code> |
+
+--------------------
+
+
+### unsetImmersiveNavigationBar(...)
+
+```typescript
+unsetImmersiveNavigationBar(options?: NavigationBarOptions | undefined) => Promise<void>
+```
+
+unset navigation bar immersive on Android , not implemented on IOS
+
+| Param         | Type                                                                  |
+| ------------- | --------------------------------------------------------------------- |
+| **`options`** | <code><a href="#navigationbaroptions">NavigationBarOptions</a></code> |
 
 --------------------
 
@@ -205,10 +233,39 @@ Remove all native listeners for this plugin
 | **`statusBarHeight`** | <code>number</code> |
 
 
+#### NavigationBarOptions
+
+| Prop                 | Type                                                      | Description                                        |
+| -------------------- | --------------------------------------------------------- | -------------------------------------------------- |
+| **`statusBarBg`**    | <code>string</code>                                       | statusbar background color, default is transparent |
+| **`statusBarStyle`** | <code><a href="#statusbarstyle">StatusbarStyle</a></code> | statusbar style                                    |
+
+
 #### PluginListenerHandle
 
 | Prop         | Type                                      |
 | ------------ | ----------------------------------------- |
 | **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
+
+
+### Type Aliases
+
+
+#### Pick
+
+From T, pick a set of properties whose keys are in the union K
+
+<code>{ [P in K]: T[P]; }</code>
+
+
+### Enums
+
+
+#### StatusbarStyle
+
+| Members     | Value                |
+| ----------- | -------------------- |
+| **`Light`** | <code>'light'</code> |
+| **`Dark`**  | <code>'dark'</code>  |
 
 </docgen-api>
