@@ -2,6 +2,8 @@ package com.capacitor.safearea;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.WindowInsetsController;
 import android.graphics.drawable.ColorDrawable;
 import android.content.res.Configuration;
 
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -33,31 +36,132 @@ public class SafeAreaPlugin extends Plugin {
     private boolean isListening = false;
 
     private int lastOrientation = -1;
+    private Handler mainHandler;
+    
+    // 简化后的状态管理
+    private JSObject lastInsets = null;
+    private Runnable pendingRotationTask = null;
 
 
     @Override
     public void load() {
         if (this.getBridge() != null) {
             safeAreaInsets.setBridge(this.getBridge());
+            mainHandler = new Handler(Looper.getMainLooper());
             this.startListeningForSafeAreaChanges();
         }
     }
 
+    @Override
+    protected void handleOnDestroy() {
+        stopListening();
+        if (mainHandler != null) {
+            mainHandler.removeCallbacksAndMessages(null);
+        }
+        super.handleOnDestroy();
+    }
+
     private void startListeningForSafeAreaChanges() {
         if (!isListening && bridge != null && bridge.getActivity() != null) {
+            // 初始化：记录当前状态，避免初始触发事件
+            lastInsets = safeAreaInsets.getSafeAreaInsets(false);
+            lastOrientation = getCurrentRotation();
+            
+            // 使用 OrientationEventListener 监听屏幕旋转
+            // 相比 Configuration.onConfigurationChanged，它能更早地检测到旋转
             orientationEventListener = new OrientationEventListener(bridge.getActivity()) {
                 @Override
                 public void onOrientationChanged(int orientation) {
-                    int currentOrientation = getCurrentRotation();
-                    if (currentOrientation != lastOrientation) {
-                        lastOrientation = currentOrientation;
-                        detectSafeAreaChanges();
-                    }
+                    handleOrientationChange();
                 }
             };
-            orientationEventListener.enable();
+            
+            if (orientationEventListener.canDetectOrientation()) {
+                orientationEventListener.enable();
+            }
 
             isListening = true;
+        }
+    }
+
+    /**
+     * 处理方向变化
+     * 使用 debounce 模式：取消之前的待处理任务，重新调度
+     */
+    private void handleOrientationChange() {
+        int currentOrientation = getCurrentRotation();
+        
+        // 检查方向是否真正改变（排除初始化和无效值）
+        if (currentOrientation == lastOrientation || 
+            currentOrientation == -1 || 
+            lastOrientation == -1) {
+            // 首次初始化：记录方向但不触发
+            if (lastOrientation == -1 && currentOrientation != -1) {
+                lastOrientation = currentOrientation;
+            }
+            return;
+        }
+        
+        // 更新方向
+        lastOrientation = currentOrientation;
+        
+        // Debounce: 取消之前的待处理任务
+        if (pendingRotationTask != null && mainHandler != null) {
+            mainHandler.removeCallbacks(pendingRotationTask);
+        }
+        
+        // 创建新的延迟任务
+        pendingRotationTask = () -> {
+            notifySafeAreaChange();
+            pendingRotationTask = null;
+        };
+        
+        // 延迟执行，等待旋转动画完成和 insets 更新
+        if (mainHandler != null) {
+            mainHandler.postDelayed(pendingRotationTask, 200);
+        }
+    }
+
+    /**
+     * 通知 SafeArea 变化
+     * 只在值真正改变时才通知
+     */
+    private void notifySafeAreaChange() {
+        if (bridge == null || bridge.getActivity() == null) {
+            return;
+        }
+        
+        // 在主线程获取最新的 insets
+        bridge.getActivity().runOnUiThread(() -> {
+            JSObject currentInsets = safeAreaInsets.getSafeAreaInsets(false);
+            
+            // 只在值改变时才通知
+            if (!insetsEqual(lastInsets, currentInsets)) {
+                lastInsets = currentInsets;
+                
+                JSObject ret = new JSObject();
+                ret.put(KEY_INSET, currentInsets);
+                notifyListeners("safeAreaChanged", ret);
+            }
+        });
+    }
+
+    /**
+     * 停止所有监听
+     */
+    private void stopListening() {
+        if (isListening) {
+            if (orientationEventListener != null) {
+                orientationEventListener.disable();
+                orientationEventListener = null;
+            }
+            
+            if (mainHandler != null && pendingRotationTask != null) {
+                mainHandler.removeCallbacks(pendingRotationTask);
+                pendingRotationTask = null;
+            }
+            
+            isListening = false;
         }
     }
 
@@ -297,17 +401,26 @@ public class SafeAreaPlugin extends Plugin {
     @SuppressWarnings("unused")
     @PluginMethod
     public void stopListeningForSafeAreaChanges(PluginCall call) {
-        if (isListening) {
-            orientationEventListener.disable();
-            isListening = false;
-        }
+        stopListening();
         call.resolve();
     }
 
-    private void detectSafeAreaChanges() {
-        JSObject ret = new JSObject();
-        ret.put(KEY_INSET, safeAreaInsets.getSafeAreaInsets());
-        notifyListeners("safeAreaChanged", ret);
+
+    /**
+     * 比较两个 insets 对象是否相等
+     */
+    private boolean insetsEqual(JSObject insets1, JSObject insets2) {
+        if (insets1 == null || insets2 == null) {
+            return false;
+        }
+        try {
+            return insets1.getInteger("top").equals(insets2.getInteger("top")) &&
+                   insets1.getInteger("left").equals(insets2.getInteger("left")) &&
+                   insets1.getInteger("right").equals(insets2.getInteger("right")) &&
+                   insets1.getInteger("bottom").equals(insets2.getInteger("bottom"));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 

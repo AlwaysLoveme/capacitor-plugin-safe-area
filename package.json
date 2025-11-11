@@ -1,6 +1,6 @@
 {
   "name": "capacitor-plugin-safe-area",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "a capacitor plugin to get SafeArea info on Android and IOS",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

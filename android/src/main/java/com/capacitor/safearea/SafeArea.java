@@ -3,6 +3,7 @@ package com.capacitor.safearea;
 import android.util.Log;
 
 import android.os.Build;
+import android.os.Looper;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
@@ -25,7 +26,22 @@ public class SafeArea {
         this.bridge = bridge;
     }
 
+    /**
+     * 检查当前是否在主线程
+     */
+    private boolean isMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
+    }
+
     public JSObject getSafeAreaInsets() {
+        return getSafeAreaInsets(false);
+    }
+
+    /**
+     * 获取 SafeArea insets
+     * @param forceRefresh 是否强制刷新 WindowInsets（仅在旋转等场景使用，避免无限循环）
+     */
+    public JSObject getSafeAreaInsets(boolean forceRefresh) {
         // Null check for bridge and activity
         if (this.bridge == null || this.bridge.getActivity() == null) {
             return this.result(0, 0, 0, 0);
@@ -35,6 +51,19 @@ public class SafeArea {
         View decor = this.bridge.getActivity().getWindow().getDecorView();
         if (decor == null) {
             return this.result(0, 0, 0, 0);
+        }
+
+        // 只有在明确需要强制刷新时才请求重新应用 WindowInsets
+        // 避免在监听器回调中再次触发，导致无限循环
+        if (forceRefresh) {
+            if (isMainThread()) {
+                ViewCompat.requestApplyInsets(decor);
+            } else {
+                // 如果不在主线程，在主线程执行（不等待结果）
+                this.bridge.getActivity().runOnUiThread(() -> {
+                    ViewCompat.requestApplyInsets(decor);
+                });
+            }
         }
 
         int top = 0;
