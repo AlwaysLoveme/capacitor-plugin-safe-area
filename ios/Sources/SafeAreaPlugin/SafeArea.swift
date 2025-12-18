@@ -2,14 +2,14 @@ import UIKit
 import Foundation
 
 @objc public class SafeArea: NSObject {
-    
+
     // 多种方式获取当前活跃的 window，确保兼容性
     @objc public func getWindow() -> UIWindow? {
         // 方式1: iOS 15+ 使用 connectedScenes
         if #available(iOS 15.0, *) {
             let scenes = UIApplication.shared.connectedScenes
                 .compactMap { $0 as? UIWindowScene }
-            
+
             // 优先获取激活状态的场景
             if let activeScene = scenes.first(where: { $0.activationState == .foregroundActive }) {
                 if let keyWindow = activeScene.windows.first(where: { $0.isKeyWindow }) {
@@ -20,7 +20,7 @@ import Foundation
                     return visibleWindow
                 }
             }
-            
+
             // 备选：任意场景的 keyWindow
             for scene in scenes {
                 if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
@@ -28,34 +28,34 @@ import Foundation
                 }
             }
         }
-        
+
         // 方式2: iOS 13-14 使用 windows 数组
         if #available(iOS 13.0, *) {
             // 优先从所有 window 中查找 keyWindow
             if let keyWindow = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
                 return keyWindow
             }
-            
+
             // 备选1：查找激活的 window
-            if let activeWindow = UIApplication.shared.windows.first(where: { 
-                $0.windowLevel == .normal && !$0.isHidden 
+            if let activeWindow = UIApplication.shared.windows.first(where: {
+                $0.windowLevel == .normal && !$0.isHidden
             }) {
                 return activeWindow
             }
-            
+
             // 备选2：第一个可见窗口
             if let visibleWindow = UIApplication.shared.windows.first(where: { !$0.isHidden }) {
                 return visibleWindow
             }
-            
+
             // 最终备选：第一个窗口
             return UIApplication.shared.windows.first
         }
-        
+
         // 方式3: iOS 12 及以下使用已废弃但仍可用的 keyWindow
         return UIApplication.shared.keyWindow
     }
-    
+
     @objc public func getSafeAreaInsets() -> UIEdgeInsets {
         // 必须在主线程执行
         if !Thread.isMainThread {
@@ -65,10 +65,10 @@ import Foundation
             }
             return insets
         }
-        
+
         return getSafeAreaInsetsOnMainThread()
     }
-    
+
     private func getSafeAreaInsetsOnMainThread() -> UIEdgeInsets {
         // iOS 11+ 才有 safeAreaInsets
         guard #available(iOS 11.0, *) else {
@@ -76,9 +76,9 @@ import Foundation
             let statusBarHeight = getStatusBarHeight()
             return UIEdgeInsets(top: statusBarHeight, left: 0, bottom: 0, right: 0)
         }
-        
+
         // 尝试多种方式获取 safeAreaInsets
-        
+
         // 方式1: 从 window 获取（最可靠）
         if let window = getWindow() {
             let insets = window.safeAreaInsets
@@ -87,7 +87,7 @@ import Foundation
                 return insets
             }
         }
-        
+
         // 方式2: 从所有 windows 中查找有效的 safeAreaInsets
         if #available(iOS 13.0, *) {
             for window in UIApplication.shared.windows where !window.isHidden {
@@ -98,7 +98,7 @@ import Foundation
                 }
             }
         }
-        
+
         // 方式3: 从根视图控制器的 view 获取
         if let window = getWindow(),
            let rootViewController = window.rootViewController {
@@ -107,7 +107,7 @@ import Foundation
                 return insets
             }
         }
-        
+
         // 方式4: 尝试从第一个可用的 window 获取
         if #available(iOS 13.0, *) {
             if let firstWindow = UIApplication.shared.windows.first {
@@ -118,11 +118,11 @@ import Foundation
                 return keyWindow.safeAreaInsets
             }
         }
-        
+
         // 最终备选：返回零值
         return .zero
     }
-    
+
     @objc public func getStatusBarHeight() -> CGFloat {
         // 必须在主线程执行
         if !Thread.isMainThread {
@@ -132,20 +132,20 @@ import Foundation
             }
             return height
         }
-        
+
         return getStatusBarHeightOnMainThread()
     }
-    
+
     private func getStatusBarHeightOnMainThread() -> CGFloat {
         var statusBarHeight: CGFloat = 0
-        
+
         // iOS 13+ 从 WindowScene 获取
         if #available(iOS 13.0, *) {
             // 尝试从激活状态的场景获取
             let activeScene = UIApplication.shared.connectedScenes
                 .compactMap { $0 as? UIWindowScene }
                 .first { $0.activationState == .foregroundActive }
-            
+
             if let statusBarManager = activeScene?.statusBarManager {
                 statusBarHeight = statusBarManager.statusBarFrame.size.height
             } else {
@@ -153,12 +153,12 @@ import Foundation
                 let firstScene = UIApplication.shared.connectedScenes
                     .compactMap { $0 as? UIWindowScene }
                     .first
-                
+
                 if let statusBarManager = firstScene?.statusBarManager {
                     statusBarHeight = statusBarManager.statusBarFrame.size.height
                 }
             }
-            
+
             // 如果还是获取不到，尝试从 window 的 safeAreaInsets 推断
             if statusBarHeight == 0, let window = getWindow() {
                 if #available(iOS 11.0, *) {
@@ -169,7 +169,7 @@ import Foundation
             // iOS 12 及以下从 UIApplication 获取
             statusBarHeight = UIApplication.shared.statusBarFrame.size.height
         }
-        
+
         // 验证返回值的合理性（一般在 20-60 之间）
         // 如果异常，尝试使用默认值
         if statusBarHeight < 0 || statusBarHeight > 100 {
@@ -182,7 +182,7 @@ import Foundation
             }
             return 20 // 默认状态栏高度
         }
-        
+
         return statusBarHeight
     }
 }

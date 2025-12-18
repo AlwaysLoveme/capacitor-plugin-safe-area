@@ -1,25 +1,22 @@
 package com.capacitor.safearea;
 
-import android.util.Log;
-
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Looper;
-
-import com.getcapacitor.Bridge;
-import com.getcapacitor.JSObject;
-
+import android.util.Log;
 import android.view.DisplayCutout;
 import android.view.View;
 import android.view.WindowInsets;
-import android.graphics.Rect;
-
+import androidx.core.graphics.Insets;
 import androidx.core.view.DisplayCutoutCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.core.graphics.Insets;
+import com.getcapacitor.Bridge;
+import com.getcapacitor.JSObject;
 
 public class SafeArea {
+
     private Bridge bridge;
 
     public void setBridge(Bridge bridge) {
