@@ -1,6 +1,8 @@
 package com.capacitor.safearea;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,20 +11,15 @@ import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsetsController;
-import android.graphics.drawable.ColorDrawable;
-import android.content.res.Configuration;
-
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
-
 import java.util.Objects;
 
 @CapacitorPlugin(name = "SafeArea")
@@ -37,11 +34,10 @@ public class SafeAreaPlugin extends Plugin {
 
     private int lastOrientation = -1;
     private Handler mainHandler;
-    
+
     // 简化后的状态管理
     private JSObject lastInsets = null;
     private Runnable pendingRotationTask = null;
-
 
     @Override
     public void load() {
@@ -66,7 +62,7 @@ public class SafeAreaPlugin extends Plugin {
             // 初始化：记录当前状态，避免初始触发事件
             lastInsets = safeAreaInsets.getSafeAreaInsets(false);
             lastOrientation = getCurrentRotation();
-            
+
             // 使用 OrientationEventListener 监听屏幕旋转
             // 相比 Configuration.onConfigurationChanged，它能更早地检测到旋转
             orientationEventListener = new OrientationEventListener(bridge.getActivity()) {
@@ -75,7 +71,7 @@ public class SafeAreaPlugin extends Plugin {
                     handleOrientationChange();
                 }
             };
-            
+
             if (orientationEventListener.canDetectOrientation()) {
                 orientationEventListener.enable();
             }
@@ -90,32 +86,30 @@ public class SafeAreaPlugin extends Plugin {
      */
     private void handleOrientationChange() {
         int currentOrientation = getCurrentRotation();
-        
+
         // 检查方向是否真正改变（排除初始化和无效值）
-        if (currentOrientation == lastOrientation || 
-            currentOrientation == -1 || 
-            lastOrientation == -1) {
+        if (currentOrientation == lastOrientation || currentOrientation == -1 || lastOrientation == -1) {
             // 首次初始化：记录方向但不触发
             if (lastOrientation == -1 && currentOrientation != -1) {
                 lastOrientation = currentOrientation;
             }
             return;
         }
-        
+
         // 更新方向
         lastOrientation = currentOrientation;
-        
+
         // Debounce: 取消之前的待处理任务
         if (pendingRotationTask != null && mainHandler != null) {
             mainHandler.removeCallbacks(pendingRotationTask);
         }
-        
+
         // 创建新的延迟任务
         pendingRotationTask = () -> {
             notifySafeAreaChange();
             pendingRotationTask = null;
         };
-        
+
         // 延迟执行，等待旋转动画完成和 insets 更新
         if (mainHandler != null) {
             mainHandler.postDelayed(pendingRotationTask, 200);
@@ -130,20 +124,22 @@ public class SafeAreaPlugin extends Plugin {
         if (bridge == null || bridge.getActivity() == null) {
             return;
         }
-        
+
         // 在主线程获取最新的 insets
-        bridge.getActivity().runOnUiThread(() -> {
-            JSObject currentInsets = safeAreaInsets.getSafeAreaInsets(false);
-            
-            // 只在值改变时才通知
-            if (!insetsEqual(lastInsets, currentInsets)) {
-                lastInsets = currentInsets;
-                
-                JSObject ret = new JSObject();
-                ret.put(KEY_INSET, currentInsets);
-                notifyListeners("safeAreaChanged", ret);
-            }
-        });
+        bridge
+            .getActivity()
+            .runOnUiThread(() -> {
+                JSObject currentInsets = safeAreaInsets.getSafeAreaInsets(false);
+
+                // 只在值改变时才通知
+                if (!insetsEqual(lastInsets, currentInsets)) {
+                    lastInsets = currentInsets;
+
+                    JSObject ret = new JSObject();
+                    ret.put(KEY_INSET, currentInsets);
+                    notifyListeners("safeAreaChanged", ret);
+                }
+            });
     }
 
     /**
@@ -155,12 +151,12 @@ public class SafeAreaPlugin extends Plugin {
                 orientationEventListener.disable();
                 orientationEventListener = null;
             }
-            
+
             if (mainHandler != null && pendingRotationTask != null) {
                 mainHandler.removeCallbacks(pendingRotationTask);
                 pendingRotationTask = null;
             }
-            
+
             isListening = false;
         }
     }
@@ -169,7 +165,7 @@ public class SafeAreaPlugin extends Plugin {
         if (bridge == null || bridge.getActivity() == null) {
             return -1;
         }
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // Use new API for Android 11+
             try {
@@ -178,7 +174,7 @@ public class SafeAreaPlugin extends Plugin {
                 Log.w("SafeAreaPlugin", "Failed to get rotation using new API, falling back", e);
             }
         }
-        
+
         // Fallback for older versions
         try {
             return bridge.getActivity().getWindowManager().getDefaultDisplay().getRotation();
@@ -188,7 +184,6 @@ public class SafeAreaPlugin extends Plugin {
         }
     }
 
-
     @SuppressWarnings("unused")
     @PluginMethod
     public void setImmersiveNavigationBar(PluginCall call) {
@@ -196,61 +191,69 @@ public class SafeAreaPlugin extends Plugin {
             call.reject("Activity not available");
             return;
         }
-        
+
         Window window = bridge.getActivity().getWindow();
         if (window == null) {
             call.reject("Window not available");
             return;
         }
-        
+
         // optional style parameter: default | light | dark
         String styleStr = call.getString("statusBarStyle");
         final String styleFinal = styleStr != null ? styleStr : "default";
 
         // prefer platform API for API 34+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            bridge.getActivity().runOnUiThread(() -> {
-                WindowCompat.setDecorFitsSystemWindows(window, false);
-                Objects.requireNonNull(window.getInsetsController()).setSystemBarsAppearance(
-                    0,
-                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                );
-                // hide system bars using compat controller for consistency
-                WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, window.getDecorView());
-                compat.hide(WindowInsetsCompat.Type.systemBars());
-                window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    WindowCompat.setDecorFitsSystemWindows(window, false);
+                    Objects.requireNonNull(window.getInsetsController()).setSystemBarsAppearance(
+                        0,
+                        WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                    );
+                    // hide system bars using compat controller for consistency
+                    WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, window.getDecorView());
+                    compat.hide(WindowInsetsCompat.Type.systemBars());
+                    window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
 
-                // Determine appearance for status bar icons based on styleFinal (auto/dark/light)
-                View decor = window.getDecorView();
-                boolean wantDarkIcons = computeWantDarkIcons(decor, null, styleFinal);
-                compat.setAppearanceLightStatusBars(wantDarkIcons);
-            });
+                    // Determine appearance for status bar icons based on styleFinal (auto/dark/light)
+                    View decor = window.getDecorView();
+                    boolean wantDarkIcons = computeWantDarkIcons(decor, null, styleFinal);
+                    compat.setAppearanceLightStatusBars(wantDarkIcons);
+                });
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            bridge.getActivity().runOnUiThread(() -> {
-                WindowCompat.setDecorFitsSystemWindows(window, false);
-                WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, window.getDecorView());
-                compat.hide(WindowInsetsCompat.Type.systemBars());
-                window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    WindowCompat.setDecorFitsSystemWindows(window, false);
+                    WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, window.getDecorView());
+                    compat.hide(WindowInsetsCompat.Type.systemBars());
+                    window.getDecorView().setBackgroundColor(Color.TRANSPARENT);
 
-                // Determine appearance for status bar icons
-                View decor = window.getDecorView();
-                boolean wantDarkIcons = computeWantDarkIcons(decor, null, styleFinal);
-                compat.setAppearanceLightStatusBars(wantDarkIcons);
-            });
+                    // Determine appearance for status bar icons
+                    View decor = window.getDecorView();
+                    boolean wantDarkIcons = computeWantDarkIcons(decor, null, styleFinal);
+                    compat.setAppearanceLightStatusBars(wantDarkIcons);
+                });
         } else {
             // fallback for very old devices: use legacy systemUiVisibility flags
-            bridge.getActivity().runOnUiThread(() -> {
-                window.getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                );
-                // cannot reliably set icon color on legacy devices
-            });
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    window
+                        .getDecorView()
+                        .setSystemUiVisibility(
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
+                                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        );
+                    // cannot reliably set icon color on legacy devices
+                });
         }
         call.resolve();
     }
@@ -262,7 +265,7 @@ public class SafeAreaPlugin extends Plugin {
             call.reject("Activity not available");
             return;
         }
-        
+
         Window window = bridge.getActivity().getWindow();
         if (window == null) {
             call.reject("Window not available");
@@ -286,60 +289,69 @@ public class SafeAreaPlugin extends Plugin {
 
         // Reverse the immersive/navigation bar changes applied in setImmersiveNavigationBar.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            bridge.getActivity().runOnUiThread(() -> {
-                // restore default fitting of system windows
-                WindowCompat.setDecorFitsSystemWindows(window, true);
-                // clear any explicit appearance flags if present
-                if (window.getInsetsController() != null) {
-                    window.getInsetsController().setSystemBarsAppearance(
-                            0,
-                            WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
-                    );
-                }
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    // restore default fitting of system windows
+                    WindowCompat.setDecorFitsSystemWindows(window, true);
+                    // clear any explicit appearance flags if present
+                    if (window.getInsetsController() != null) {
+                        window
+                            .getInsetsController()
+                            .setSystemBarsAppearance(
+                                0,
+                                WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS |
+                                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                            );
+                    }
 
-                View decor = window.getDecorView();
-                // show system bars via compat controller
-                WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, decor);
-                compat.show(WindowInsetsCompat.Type.systemBars());
+                    View decor = window.getDecorView();
+                    // show system bars via compat controller
+                    WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, decor);
+                    compat.show(WindowInsetsCompat.Type.systemBars());
 
-                // Determine background: if not provided, default to transparent
-                final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
-                decor.setBackgroundColor(appliedBg);
-
-                // Determine appearance (icons/text): styleFinal can be 'default', 'light', 'dark'
-                boolean wantDarkIcons = computeWantDarkIcons(decor, bgColorIntFinal, styleFinal);
-
-                // Apply appearance: compat.setAppearanceLightStatusBars(true) => dark icons
-                compat.setAppearanceLightStatusBars(wantDarkIcons);
-            });
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            bridge.getActivity().runOnUiThread(() -> {
-                WindowCompat.setDecorFitsSystemWindows(window, true);
-                View decor = window.getDecorView();
-                WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, decor);
-                compat.show(WindowInsetsCompat.Type.systemBars());
-
-                // Determine background: if not provided, default to transparent
-                final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
-                try {
-                    window.setStatusBarColor(appliedBg);
-                } catch (Throwable t) {
+                    // Determine background: if not provided, default to transparent
+                    final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
                     decor.setBackgroundColor(appliedBg);
-                }
 
-                // Determine appearance
-                boolean wantDarkIcons = computeWantDarkIcons(decor, bgColorIntFinal, styleFinal);
-                compat.setAppearanceLightStatusBars(wantDarkIcons);
-            });
+                    // Determine appearance (icons/text): styleFinal can be 'default', 'light', 'dark'
+                    boolean wantDarkIcons = computeWantDarkIcons(decor, bgColorIntFinal, styleFinal);
+
+                    // Apply appearance: compat.setAppearanceLightStatusBars(true) => dark icons
+                    compat.setAppearanceLightStatusBars(wantDarkIcons);
+                });
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    WindowCompat.setDecorFitsSystemWindows(window, true);
+                    View decor = window.getDecorView();
+                    WindowInsetsControllerCompat compat = new WindowInsetsControllerCompat(window, decor);
+                    compat.show(WindowInsetsCompat.Type.systemBars());
+
+                    // Determine background: if not provided, default to transparent
+                    final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
+                    try {
+                        window.setStatusBarColor(appliedBg);
+                    } catch (Throwable t) {
+                        decor.setBackgroundColor(appliedBg);
+                    }
+
+                    // Determine appearance
+                    boolean wantDarkIcons = computeWantDarkIcons(decor, bgColorIntFinal, styleFinal);
+                    compat.setAppearanceLightStatusBars(wantDarkIcons);
+                });
         } else {
             // fallback for very old devices
-            bridge.getActivity().runOnUiThread(() -> {
-                legacySetSystemUiVisibility(window.getDecorView());
-                // best-effort apply background via decor view for legacy devices
-                final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
-                window.getDecorView().setBackgroundColor(appliedBg);
-                // cannot reliably set icon color on legacy devices
-            });
+            bridge
+                .getActivity()
+                .runOnUiThread(() -> {
+                    legacySetSystemUiVisibility(window.getDecorView());
+                    // best-effort apply background via decor view for legacy devices
+                    final int appliedBg = bgColorIntFinal != null ? bgColorIntFinal : Color.TRANSPARENT;
+                    window.getDecorView().setBackgroundColor(appliedBg);
+                    // cannot reliably set icon color on legacy devices
+                });
         }
 
         call.resolve();
@@ -386,7 +398,7 @@ public class SafeAreaPlugin extends Plugin {
                 // fall through to default
             }
         }
-        
+
         // Ultimate fallback: assume light background (dark icons)
         return true;
     }
@@ -405,7 +417,6 @@ public class SafeAreaPlugin extends Plugin {
         call.resolve();
     }
 
-
     /**
      * 比较两个 insets 对象是否相等
      */
@@ -414,15 +425,16 @@ public class SafeAreaPlugin extends Plugin {
             return false;
         }
         try {
-            return insets1.getInteger("top").equals(insets2.getInteger("top")) &&
-                   insets1.getInteger("left").equals(insets2.getInteger("left")) &&
-                   insets1.getInteger("right").equals(insets2.getInteger("right")) &&
-                   insets1.getInteger("bottom").equals(insets2.getInteger("bottom"));
+            return (
+                insets1.getInteger("top").equals(insets2.getInteger("top")) &&
+                insets1.getInteger("left").equals(insets2.getInteger("left")) &&
+                insets1.getInteger("right").equals(insets2.getInteger("right")) &&
+                insets1.getInteger("bottom").equals(insets2.getInteger("bottom"))
+            );
         } catch (Exception e) {
             return false;
         }
     }
-
 
     @SuppressWarnings("unused")
     @PluginMethod

@@ -15,7 +15,7 @@ export interface SafeAreaPlugin {
    * Set navigation bar immersive on Android , statusbar background is always set to transparent, not implemented on IOS
    * @param options.statusBarStyle - statusbar style
    */
-  setImmersiveNavigationBar(options?: Pick<NavigationBarOptions, "statusBarStyle">): Promise<void>;
+  setImmersiveNavigationBar(options?: Pick<NavigationBarOptions, 'statusBarStyle'>): Promise<void>;
 
   /**
    * unset navigation bar immersive on Android , not implemented on IOS
@@ -23,16 +23,13 @@ export interface SafeAreaPlugin {
    * @param options.statusBarStyle - statusbar style
    */
   unsetImmersiveNavigationBar(options?: NavigationBarOptions): Promise<void>;
-  
+
   /**
    * Event listener when safe-area changed
    * @param event
    * @param listenerFunc
    */
-  addListener(
-    event: 'safeAreaChanged',
-    listenerFunc: (data: SafeAreaInsets) => void,
-  ): Promise<PluginListenerHandle>;
+  addListener(event: 'safeAreaChanged', listenerFunc: (data: SafeAreaInsets) => void): Promise<PluginListenerHandle>;
 
   /**
    * Remove all native listeners for this plugin
