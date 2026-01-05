@@ -21,6 +21,7 @@
 #### a capacitor plugin to get SafeArea info on Android and IOS, latest version is support for Capacitor v7.
 
 ### Version Support
+- [x] v5.0.0 support Capacitor v8
 - [x] v4.0.0 support Capacitor v7
 - [x] v3.0.0 support Capacitor v6
 - [x] v2.0.0 support Capacitor v5
@@ -255,7 +256,9 @@ Remove all native listeners for this plugin
 
 From T, pick a set of properties whose keys are in the union K
 
-<code>{ [P in K]: T[P]; }</code>
+<code>{
+ [P in K]: T[P];
+ }</code>
 
 
 ### Enums
